@@ -32,7 +32,7 @@ function LoginFlow() {
       if (factor.status === 'unverified') await supabase.auth.mfa.unenroll({ factorId: factor.id })
     }
     const { data, error } = await supabase.auth.mfa.enroll({ factorType: 'totp', friendlyName: `BEM ${Date.now()}` })
-    if (error || !data) {
+    if (error || !data || data.type !== "totp") {
       setInfo("Impossible de préparer l'authentification à deux facteurs.")
       setStep('email')
       return
